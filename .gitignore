@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Archivos subidos: no se versionan, cada entorno genera los suyos.
+uploads/*
+!uploads/.gitkeep
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

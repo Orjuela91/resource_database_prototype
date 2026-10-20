@@ -1,0 +1,2 @@
+# Sin dependencias externas.
+# El servidor (server.py) usa solo la biblioteca estándar de Python.

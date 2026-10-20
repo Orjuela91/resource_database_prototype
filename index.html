@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Banco de recursos: prototipo para almacenar, organizar y asignar recursos pedagógicos.">
+  <meta name="theme-color" content="#143f34">
+  <title>Banco de recursos · Recursos pedagógicos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Saltar al contenido</a>
+
+  <div id="page-content" tabindex="-1">
+    <!-- ================= VISTA DE AUTENTICACIÓN ================= -->
+    <div id="auth-view" class="auth-shell">
+      <section class="auth-brand" aria-label="Presentación de Banco de recursos">
+        <div class="brand-lockup">
+          <span class="brand-mark brand-mark--light" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+            </svg>
+          </span>
+          <span class="brand-word">Banco de <span>recursos</span></span>
+        </div>
+
+        <div class="auth-brand-copy">
+          <span class="pill pill--light">Prototipo de recursos pedagógicos</span>
+          <h1>Todo el material educativo, en un solo lugar.</h1>
+          <p>Organiza recursos, crea listas a medida y acompáñalos a quienes más lo necesitan. Una experiencia pensada para equipos de orientación y aulas diversas.</p>
+          <ul class="auth-features">
+            <li>
+              <span class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              </span>
+              <span><strong>Biblioteca centralizada</strong><small>Recursos con nivel, descripción y archivo adjunto.</small></span>
+            </li>
+            <li>
+              <span class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
+              </span>
+              <span><strong>Listas personalizadas</strong><small>Selecciona recursos y asígnalos a cada persona.</small></span>
+            </li>
+            <li>
+              <span class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+              </span>
+              <span><strong>Acceso por roles</strong><small>Cada persona ve exactamente lo que necesita.</small></span>
+            </li>
+          </ul>
+        </div>
+
+        <p class="auth-footnote">
+          <span class="status-dot" aria-hidden="true"></span>
+          Prototipo local: los datos se guardan en este navegador y los archivos en la carpeta uploads.
+        </p>
+        <div class="brand-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+      </section>
+
+      <main id="auth-main" class="auth-main">
+        <div class="auth-card">
+          <!-- Inicio de sesión -->
+          <section id="login-panel" class="auth-panel" aria-labelledby="login-title">
+            <header class="auth-header">
+              <p class="eyebrow">Bienvenido de nuevo</p>
+              <h2 id="login-title">Inicia sesión</h2>
+              <p>Accede con tu correo para continuar a tu espacio de trabajo.</p>
+            </header>
+
+            <form id="login-form" class="auth-form" novalidate>
+              <div class="field">
+                <label for="login-email">Correo electrónico</label>
+                <input id="login-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" aria-describedby="login-email-error">
+                <p class="field-error" id="login-email-error" hidden></p>
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <label for="login-password">Contraseña</label>
+                </div>
+                <div class="password-field">
+                  <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Tu contraseña" aria-describedby="login-password-error">
+                  <button class="password-toggle" type="button" data-toggle-password="login-password" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button>
+                </div>
+                <p class="field-error" id="login-password-error" hidden></p>
+              </div>
+              <p class="form-alert" id="login-error" role="alert" hidden></p>
+              <button class="btn btn-primary btn-block" type="submit">
+                Ingresar
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+              </button>
+            </form>
+
+            <p class="auth-switch">¿Aún no tienes cuenta? <button type="button" class="link-button" data-auth-target="register">Crear una cuenta</button></p>
+
+            <div class="demo-panel">
+              <div class="demo-panel-head">
+                <span>Cuentas de demostración</span>
+                <small>Haz clic para entrar</small>
+              </div>
+              <div class="demo-list">
+                <button type="button" class="demo-card" data-demo-email="admin@bancoderecursos.com" data-demo-password="admin123">
+                  <span class="demo-avatar demo-avatar--admin" aria-hidden="true">VR</span>
+                  <span class="demo-copy"><strong>Administradora</strong><small>admin@bancoderecursos.com · admin123</small></span>
+                  <span class="demo-enter" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+                  </span>
+                </button>
+                <button type="button" class="demo-card" data-demo-email="psicologo@bancoderecursos.com" data-demo-password="psi12345">
+                  <span class="demo-avatar demo-avatar--psych" aria-hidden="true">MH</span>
+                  <span class="demo-copy"><strong>Psicólogo</strong><small>psicologo@bancoderecursos.com · psi12345</small></span>
+                  <span class="demo-enter" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+                  </span>
+                </button>
+                <button type="button" class="demo-card" data-demo-email="usuario@bancoderecursos.com" data-demo-password="user1234">
+                  <span class="demo-avatar demo-avatar--user" aria-hidden="true">LF</span>
+                  <span class="demo-copy"><strong>Usuario</strong><small>usuario@bancoderecursos.com · user1234</small></span>
+                  <span class="demo-enter" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Registro -->
+          <section id="register-panel" class="auth-panel" aria-labelledby="register-title" hidden>
+            <header class="auth-header">
+              <p class="eyebrow">Crea tu espacio</p>
+              <h2 id="register-title">Crear una cuenta</h2>
+              <p>Regístrate para acceder a los recursos que tu equipo comparta contigo.</p>
+            </header>
+
+            <form id="register-form" class="auth-form" novalidate>
+              <div class="field">
+                <label for="register-username">Nombre completo</label>
+                <input id="register-username" name="username" type="text" autocomplete="name" placeholder="Ej. Lucía Fernández" maxlength="80" aria-describedby="register-username-error">
+                <p class="field-error" id="register-username-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="register-email">Correo electrónico</label>
+                <input id="register-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" aria-describedby="register-email-error">
+                <p class="field-error" id="register-email-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="register-password">Contraseña</label>
+                <div class="password-field">
+                  <input id="register-password" name="password" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" aria-describedby="register-password-hint register-password-error">
+                  <button class="password-toggle" type="button" data-toggle-password="register-password" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button>
+                </div>
+                <p class="field-hint" id="register-password-hint">Usa al menos 6 caracteres.</p>
+                <p class="field-error" id="register-password-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="register-confirm">Repetir contraseña</label>
+                <div class="password-field">
+                  <input id="register-confirm" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Repite tu contraseña" aria-describedby="register-confirm-error">
+                  <button class="password-toggle" type="button" data-toggle-password="register-confirm" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button>
+                </div>
+                <p class="field-error" id="register-confirm-error" hidden></p>
+              </div>
+              <p class="form-alert" id="register-error" role="alert" hidden></p>
+              <button class="btn btn-primary btn-block" type="submit">
+                Crear cuenta
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+              </button>
+            </form>
+
+            <p class="auth-switch">¿Ya tienes cuenta? <button type="button" class="link-button" data-auth-target="login">Inicia sesión</button></p>
+
+            <div class="auth-note">
+              <span class="auth-note-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/></svg>
+              </span>
+              <p>Las cuentas creadas desde este formulario reciben automáticamente el rol <strong>Usuario</strong>.</p>
+            </div>
+            <p class="auth-legal">Este es un prototipo educativo. No uses contraseñas reales ni información sensible.</p>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ================= APLICACIÓN ================= -->
+    <div id="app-view" class="app-shell" hidden>
+      <div class="sidebar-backdrop" data-action="close-sidebar" aria-hidden="true"></div>
+
+      <aside id="sidebar" class="sidebar" aria-label="Navegación principal">
+        <div class="sidebar-header">
+          <div class="brand-lockup brand-lockup--sidebar">
+            <span class="brand-mark brand-mark--light" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+            </span>
+            <span class="brand-word">Banco de <span>recursos</span></span>
+          </div>
+          <button class="icon-btn icon-btn--sidebar" type="button" data-action="close-sidebar" aria-label="Cerrar menú">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18 18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar-context" id="sidebar-context"></div>
+        <nav class="sidebar-nav" id="sidebar-nav" aria-label="Secciones"></nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-user" id="sidebar-user"></div>
+          <button class="sidebar-logout" type="button" data-action="logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/></svg>
+            <span>Cerrar sesión</span>
+          </button>
+          <p class="sidebar-note">Prototipo local · Archivos en uploads</p>
+        </div>
+      </aside>
+
+      <div class="app-main">
+        <header class="topbar">
+          <button class="icon-btn menu-toggle" type="button" data-action="open-sidebar" aria-label="Abrir menú" aria-controls="sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+          </button>
+          <p class="topbar-path"><span>Banco de recursos</span><span class="topbar-sep" aria-hidden="true">/</span><strong id="topbar-section">Panel</strong></p>
+          <div class="topbar-right">
+            <span class="topbar-date" id="topbar-date"></span>
+            <span class="topbar-avatar" id="topbar-avatar" aria-hidden="true"></span>
+          </div>
+        </header>
+
+        <main id="main-content" class="content" tabindex="-1"></main>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <dialog id="app-modal" class="modal" aria-labelledby="modal-title"></dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
