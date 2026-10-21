@@ -888,11 +888,32 @@ function renderResourcesPage() {
         <div id="library-region">${isResourcesTab ? renderResourceTable() : renderListTable()}</div>
         <div class="panel-footnote">
           ${icon('info')}
-          <span>${isResourcesTab ? 'Los archivos se guardan en la carpeta uploads del servidor. Tamaño máximo por archivo: 25 MB.' : 'Asigna cada lista a las personas que deben verla en su panel.'}</span>
+          <span data-upload-usage>${isResourcesTab ? 'Los archivos se guardan en la carpeta uploads del servidor. Tamaño máximo: 25 MB por archivo.' : 'Asigna cada lista a las personas que deben verla en su panel.'}</span>
         </div>
       </div>
     </section>
   `;
+
+  if (isResourcesTab) refreshUploadUsage();
+}
+
+async function refreshUploadUsage() {
+  const target = dom.content.querySelector('[data-upload-usage]');
+  if (!target) return;
+  try {
+    const response = await fetch('/api/usage', { headers: { Accept: 'application/json' } });
+    if (!response.ok) return;
+    const usage = await response.json();
+    if (!target.isConnected) return;
+    const used = formatBytes(usage.usedBytes);
+    const limit = formatBytes(usage.limitBytes);
+    const percent = usage.limitBytes > 0
+      ? Math.round((usage.usedBytes / usage.limitBytes) * 100)
+      : 0;
+    target.textContent = `uploads: ${used} de ${limit} usados (${percent} %) · máx. ${formatBytes(MAX_FILE_SIZE)} por archivo.`;
+  } catch (error) {
+    // Si el servidor no está disponible, se conserva el texto por defecto.
+  }
 }
 
 function statCard(iconName, tone, label, value, hint) {

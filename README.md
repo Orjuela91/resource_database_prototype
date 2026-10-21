@@ -74,7 +74,7 @@ También puedes **registrarte** desde la pantalla de registro. Toda cuenta nueva
 
 - **Recursos**: nombre, descripción, nivel (`bajo`, `medio`, `alto`) y archivo adjunto (texto, Word, Excel, PowerPoint, PDF, video o audio).
 - **Listas**: se crean a partir de recursos seleccionados y se asignan a uno o más usuarios.
-- **Archivos adjuntos**: se suben al servidor y se guardan en `uploads/` con un **id único** (UUID) como nombre de archivo, conservando la extensión. Límite de **25 MB por archivo**.
+- **Archivos adjuntos**: se suben al servidor y se guardan en `uploads/` con un **id único** (UUID) como nombre de archivo, conservando la extensión. Límite de **25 MB por archivo** y **500 MB en total** para toda la carpeta.
 - **Panel de administración** con barra lateral, tablas, formularios, modales, mensajes de confirmación/error y notificaciones.
 - **Diseño moderno, responsive y accesible** (escritorio, tablet y móvil), con navegación por rutas (`#/login`, `#/registro`, `#/recursos`, `#/usuarios`, `#/mi-panel`).
 - **Datos de prueba** precargados: 5 usuarios, 7 recursos y 3 listas (con archivos de ejemplo, incluido un audio generado).
@@ -88,7 +88,7 @@ resource_database_prototype/
 ├── index.html        # Estructura estática: vistas de autenticación, panel, modal y notificaciones.
 ├── styles.css        # Sistema de diseño completo y responsive.
 ├── app.js            # Estado, datos de prueba, rutas, renderizado, permisos y subida de archivos.
-├── server.py         # Servidor: archivos estáticos + API de subida/eliminación + /api/health.
+├── server.py         # Servidor: archivos estáticos + API de subida/eliminación/uso + /api/health.
 ├── uploads/          # Archivos subidos, guardados con un id único (UUID) y su extensión.
 ├── requirements.txt  # Sin dependencias (solo biblioteca estándar).
 ├── render.yaml       # Blueprint para desplegar en Render.
@@ -134,8 +134,12 @@ La API del servidor es:
 
 | Método | Ruta | Uso |
 | --- | --- | --- |
+| `GET` | `/api/health` | Comprueba que el servidor está vivo (`{"status": "ok"}`). |
+| `GET` | `/api/usage` | Devuelve el espacio usado, el límite y el espacio libre de `uploads/`. |
 | `POST` | `/api/upload` | Recibe el archivo en el cuerpo y devuelve sus metadatos. |
 | `DELETE` | `/api/files/<id>.<ext>` | Elimina un archivo de `uploads/`. |
+
+**Límite total:** la carpeta `uploads/` admite **500 MB** sumando todos los archivos. Si una subida supera ese total, el servidor responde `507` con un mensaje que indica el espacio libre y el archivo no se guarda. Al eliminar archivos o recursos, el espacio se libera automáticamente. El límite se puede cambiar con la variable de entorno `MAX_TOTAL_UPLOAD_MB` (por ejemplo, `MAX_TOTAL_UPLOAD_MB=1000 python3 server.py`).
 
 > Al borrar recursos o reemplazar un archivo desde la app, el archivo correspondiente también se elimina de `uploads/`. Si borras solo `localStorage`, los archivos quedarán huérfanos en la carpeta; puedes vaciarla manualmente cuando el servidor esté detenido.
 

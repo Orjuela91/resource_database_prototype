@@ -19,6 +19,7 @@ import json
 import mimetypes
 import os
 import re
+import threading
 import uuid
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -28,7 +29,30 @@ ROOT = Path(__file__).resolve().parent
 # La carpeta de archivos puede cambiarse con la variable UPLOADS_DIR
 # (útil si algún día se monta un disco persistente).
 UPLOADS_DIR = Path(os.environ.get("UPLOADS_DIR", ROOT / "uploads")).resolve()
-MAX_FILE_SIZE = int(os.environ.get("MAX_FILE_SIZE_MB", "25")) * 1024 * 1024  # 25 MB por defecto
+MAX_FILE_SIZE = int(os.environ.get("MAX_FILE_SIZE_MB", "25")) * 1024 * 1024  # 25 MB por archivo
+MAX_TOTAL_UPLOAD_SIZE = int(os.environ.get("MAX_TOTAL_UPLOAD_MB", "500")) * 1024 * 1024  # 500 MB en total
+
+# Evita que dos subidas simultáneas superen el límite total.
+UPLOAD_LOCK = threading.Lock()
+
+
+def uploads_usage() -> tuple[int, int]:
+    """Devuelve (bytes ocupados, cantidad de archivos) en uploads/."""
+    total = 0
+    count = 0
+    try:
+        entries = list(UPLOADS_DIR.iterdir())
+    except OSError:
+        return 0, 0
+    for entry in entries:
+        if not entry.is_file() or entry.name == ".gitkeep":
+            continue
+        try:
+            total += entry.stat().st_size
+            count += 1
+        except OSError:
+            continue
+    return total, count
 
 ALLOWED_EXTENSIONS = {
     "txt",
@@ -108,8 +132,22 @@ class ResourceDatabaseHandler(SimpleHTTPRequestHandler):
 
     # ------------------------------------------------------------------- rutas
     def do_GET(self):
-        if urlparse(self.path).path == "/api/health":
+        path = urlparse(self.path).path
+        if path == "/api/health":
             self.send_json(200, {"status": "ok"})
+            return
+        if path == "/api/usage":
+            with UPLOAD_LOCK:
+                used, count = uploads_usage()
+            self.send_json(
+                200,
+                {
+                    "usedBytes": used,
+                    "limitBytes": MAX_TOTAL_UPLOAD_SIZE,
+                    "freeBytes": max(0, MAX_TOTAL_UPLOAD_SIZE - used),
+                    "fileCount": count,
+                },
+            )
             return
         super().do_GET()
 
@@ -155,7 +193,7 @@ class ResourceDatabaseHandler(SimpleHTTPRequestHandler):
         if extension not in ALLOWED_EXTENSIONS:
             self.send_api_error(
                 415,
-                "Formato no permitido. Usa TXT, Word, Excel, PowerPoint, video o audio.",
+                "Formato no permitido. Usa TXT, Word, Excel, PowerPoint, PDF, video o audio.",
             )
             return
 
@@ -164,13 +202,32 @@ class ResourceDatabaseHandler(SimpleHTTPRequestHandler):
             self.send_api_error(400, "No se pudo leer el archivo completo.")
             return
 
-        file_id = uuid.uuid4().hex
-        stored_name = f"{file_id}.{extension}"
-        destination = UPLOADS_DIR / stored_name
+        with UPLOAD_LOCK:
+            used, _ = uploads_usage()
+            if used + length > MAX_TOTAL_UPLOAD_SIZE:
+                limit_mb = MAX_TOTAL_UPLOAD_SIZE // (1024 * 1024)
+                free_mb = max(0, MAX_TOTAL_UPLOAD_SIZE - used) / (1024 * 1024)
+                free_label = f"{free_mb:.1f}".replace(".", ",")
+                quota_message = (
+                    f"Se alcanzó el límite total de {limit_mb} MB en la carpeta uploads. "
+                    f"Espacio libre: {free_label} MB."
+                )
+            else:
+                quota_message = None
+                file_id = uuid.uuid4().hex
+                stored_name = f"{file_id}.{extension}"
+                destination = UPLOADS_DIR / stored_name
+                try:
+                    destination.write_bytes(data)
+                    write_error = False
+                except OSError:
+                    write_error = True
 
-        try:
-            destination.write_bytes(data)
-        except OSError:
+        if quota_message:
+            self.send_api_error(507, quota_message)
+            return
+
+        if write_error:
             self.send_api_error(500, "No se pudo guardar el archivo en el servidor.")
             return
 
